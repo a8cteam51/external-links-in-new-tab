@@ -20,7 +20,7 @@
 			<property name="prefixes" type="array">
 				<element value="wpcomsp_"/>
 				<element value="wpcomsp_elint_"/>
-				<element value="WPCOMSpecialProjects\ExternalLinksinNewTab"/>
+				<element value="WPCOMSpecialProjects\ExternalLinksInNewTab"/>
 			</property>
 		</properties>
 	</rule>

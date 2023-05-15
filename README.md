@@ -1,4 +1,4 @@
-# external-links-in-new-tab
+# External Links in New Tab
 
 **Contributors:** wpcomspecialprojects \
 **Tags:** \
@@ -9,15 +9,13 @@
 **License:** GPLv3 or later \
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html
 
-
-
 ## Description
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed leo ligula, aliquam et sem luctus, placerat facilisis orci. Cras faucibus, odio ac aliquet scelerisque, nisi ligula dignissim nisi, sed tincidunt magna libero vitae dui. Sed varius lectus turpis, fringilla maximus libero posuere nec. Aenean volutpat pharetra sem, et cursus leo sodales quis.
+This plugins adds a link parser to make all external links open in a new window. Currently only supports the post content.
 
 ## Installation
 
-This plugin requires WooCommerce 7.4+ to run. If you're running a lower version, please update first. After you made sure that you're running a supported version of WooCommerce, you may install `External Links in New Tab` either manually or through your site's plugins page.
+This plugin requires WordPress 6.2+ to run. You may install `External Links in New Tab` either manually or through your site's plugins page.
 
 ### INSTALL FROM WITHIN WORDPRESS
 
@@ -31,28 +29,6 @@ This plugin requires WooCommerce 7.4+ to run. If you're running a lower version,
 1. Upload the `external-links-in-new-tab` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the `Plugins` menu in WordPress.
 
-### AFTER ACTIVATION
-
-If the minimum required version of WooCommerce is present, you will find a section present in the `Advanced` tab of the WooCommerce `Settings` page. Aliquam dolor sem, convallis malesuada neque sit amet, dictum mattis velit. Vestibulum at pharetra metus. Suspendisse rhoncus libero nisi, sed rhoncus tortor aliquam pretium.
-
-## Frequently Asked Questions
-
-### How can I get help if I'm stuck?
-
-Quisque volutpat tortor id varius pulvinar. Vivamus porttitor, mi non auctor pellentesque, leo purus interdum libero, at aliquam justo lectus sed ligula.
-
-### I have a question that is not listed here
-
-Duis efficitur, sapien ac scelerisque placerat, elit justo tempor nisl, ut feugiat magna orci quis odio.
-
-## Screenshots
-
-### 1. Example screenshot
-
-[missing image]
-
-## Changelog
-
-### 1.0.0 (FIRST RELEASE DATE)
+## 1.0.0 (FIRST RELEASE DATE)
 
 * First official release.

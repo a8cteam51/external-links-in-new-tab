@@ -12,7 +12,7 @@
  * @wordpress-plugin
  * Plugin Name:             External Links in New Tab
  * Plugin URI:              https://wpspecialprojects.wordpress.com
- * Description:
+ * Description:             Adds a link parser to make all external links open in a new window
  * Version:                 1.0.0
  * Requires at least:       6.2
  * Tested up to:            6.2
@@ -77,5 +77,5 @@ if ( $wpcomsp_elint_requirements instanceof WP_Error ) {
 	);
 } else {
 	require_once WPCOMSP_ELINT_PATH . 'functions.php';
-	add_action( 'plugins_loaded', array( wpcomsp_elint_get_plugin_instance(), 'maybe_initialize' ) );
+	add_action( 'plugins_loaded', array( wpcomsp_elint_get_plugin_instance(), 'initialize' ) );
 }

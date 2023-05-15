@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use WPcomSpecialProjects\Scaffold\Plugin;
+use WPCOMSpecialProjects\ExternalLinksInNewTab\Plugin;
 
 // region
 
@@ -29,12 +29,5 @@ function wpcomsp_elint_get_plugin_instance(): Plugin {
 function wpcomsp_elint_get_plugin_slug(): string {
 	return sanitize_key( WPCOMSP_ELINT_METADATA['TextDomain'] );
 }
-
-// endregion
-
-//region OTHERS
-
-require WPCOMSP_ELINT_PATH . 'includes/assets.php';
-require WPCOMSP_ELINT_PATH . 'includes/settings.php';
 
 // endregion

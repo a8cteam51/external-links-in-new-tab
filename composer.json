@@ -2,7 +2,7 @@
   "name": "a8cteam51/external-links-in-new-tab",
   "type": "wordpress-plugin",
 
-  "description": "",
+  "description": "Adds a link parser to make all external links open in a new window",
   "homepage": "https://github.com/a8cteam51/external-links-in-new-tab",
   "license": "GPL-2.0-or-later",
   "authors": [
@@ -48,11 +48,8 @@
 
   "autoload": {
     "psr-4": {
-      "WPCOMSpecialProjects\\ExternalLinksinNewTab\\": "src/"
-    },
-    "classmap": [
-      "models/"
-    ]
+      "WPCOMSpecialProjects\\ExternalLinksInNewTab\\": "src/"
+    }
   },
   "autoload-dev": {
 

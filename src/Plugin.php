@@ -1,6 +1,6 @@
 <?php
 
-namespace WPCOMSpecialProjects\ExternalLinksinNewTab;
+namespace WPCOMSpecialProjects\ExternalLinksInNewTab;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -11,30 +11,6 @@ defined( 'ABSPATH' ) || exit;
  * @version 1.0.0
  */
 class Plugin {
-	// region FIELDS AND CONSTANTS
-
-	/**
-	 * The blocks component.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @var     Blocks|null
-	 */
-	public ?Blocks $blocks = null;
-
-	/**
-	 * The integrations component.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @var     Integrations|null
-	 */
-	public ?Integrations $integrations = null;
-
-	// endregion
-
 	// region MAGIC METHODS
 
 	/**
@@ -94,43 +70,6 @@ class Plugin {
 	}
 
 	/**
-	 * Returns true if all the plugin's dependencies are met.
-	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
-	 *
-	 * @param   string|null $minimum_wc_version The minimum WooCommerce version required.
-	 *
-	 * @return  boolean
-	 */
-	public function is_active( string &$minimum_wc_version = null ): bool {
-		// Check if WooCommerce is active.
-		$woocommerce_exists = \class_exists( 'WooCommerce' ) && \defined( 'WC_VERSION' );
-		if ( ! $woocommerce_exists ) {
-			return false;
-		}
-
-		// Get the minimum WooCommerce version required from the plugin's header, if needed.
-		if ( null === $minimum_wc_version ) {
-			$updated_plugin_metadata = \get_plugin_data( \trailingslashit( WP_PLUGIN_DIR ) . WPCOMSP_ELINT_BASENAME, false, false );
-			if ( ! \array_key_exists( \WC_Plugin_Updates::VERSION_REQUIRED_HEADER, $updated_plugin_metadata ) ) {
-				return false;
-			}
-
-			$minimum_wc_version = $updated_plugin_metadata[ \WC_Plugin_Updates::VERSION_REQUIRED_HEADER ];
-		}
-
-		// Check if WooCommerce version is supported.
-		$woocommerce_supported = \version_compare( WC_VERSION, $minimum_wc_version, '>=' );
-		if ( ! $woocommerce_supported ) {
-			return false;
-		}
-
-		// Custom requirements check out, just ensure basic requirements are met.
-		return true === WPCOMSP_ELINT_REQUIREMENTS;
-	}
-
-	/**
 	 * Initializes the plugin components.
 	 *
 	 * @since   1.0.0
@@ -138,12 +77,8 @@ class Plugin {
 	 *
 	 * @return  void
 	 */
-	protected function initialize(): void {
-		$this->blocks = new Blocks();
-		$this->blocks->initialize();
-
-		$this->integrations = new Integrations();
-		$this->integrations->initialize();
+	public function initialize(): void {
+		\add_filter( 'the_content', array( $this, 'external_link_target_blank' ), 999 );
 	}
 
 	// endregion
@@ -151,43 +86,41 @@ class Plugin {
 	// region HOOKS
 
 	/**
-	 * Initializes the plugin components if WooCommerce is activated.
+	 * Filters given content to add target="_blank" to external links.
 	 *
-	 * @since   1.0.0
-	 * @version 1.0.0
+	 * @see https://developer.wordpress.org/reference/files/wp-includes/html-api/class-wp-html-tag-processor.php/
+	 * @see https://adamadam.blog/2023/02/16/how-to-modify-html-in-a-php-wordpress-plugin-using-the-new-tag-processor-api/
 	 *
-	 * @return  void
+	 * @param string $content Content of the post.
+	 *
+	 * @return string
 	 */
-	public function maybe_initialize(): void {
-		if ( ! $this->is_active( $minimum_wc_version ) ) {
-			add_action(
-				'admin_notices',
-				static function() use ( $minimum_wc_version ) {
-					if ( \is_null( $minimum_wc_version ) ) {
-						$message = \wp_sprintf(
-							/* translators: 1. Plugin name, 2. Plugin version. */
-							__( '<strong>%1$s (v%2$s)</strong> requires WooCommerce. Please install and/or activate WooCommerce!', 'wpcomsp-external-links-in-new-tab' ),
-							WPCOMSP_ELINT_METADATA['Name'],
-							WPCOMSP_ELINT_METADATA['Version']
-						);
-					} else {
-						$message = \wp_sprintf(
-							/* translators: 1. Plugin name, 2. Plugin version, 3. Minimum WC version. */
-							__( '<strong>%1$s (v%2$s)</strong> requires WooCommerce %3$s or newer. Please install, update, and/or activate WooCommerce!', 'wpcomsp-external-links-in-new-tab' ),
-							WPCOMSP_ELINT_METADATA['Name'],
-							WPCOMSP_ELINT_METADATA['Version'],
-							$minimum_wc_version
-						);
-					}
+	public function external_link_target_blank( string $content ): string {
 
-					$html_message = \wp_sprintf( '<div class="error notice wpcomsp-external-links-in-new-tab-error">%s</div>', wpautop( $message ) );
-					echo \wp_kses_post( $html_message );
-				}
-			);
-			return;
+		// Instantiate the processor.
+		$processor = new \WP_HTML_Tag_Processor( $content );
+
+		// Get the domain of the site without scheme.
+		$site_domain = wp_parse_url( site_url(), PHP_URL_HOST );
+
+		// Loop through all the A tags and parse href to see if it's an external link.
+		while ( $processor->next_tag( 'A' ) ) {
+			$href        = $processor->get_attribute( 'href' );
+			$root_domain = wp_parse_url( $href, PHP_URL_HOST );
+
+			// If root domain is null, it's an internal link (no host), skip.
+			if ( null === $root_domain ) {
+				continue;
+			}
+
+			// If the root domain is not the same as the site domain, it's an external link.
+			if ( $root_domain !== $site_domain ) {
+				$processor->set_attribute( 'target', '_blank' );
+				$processor->set_attribute( 'rel', 'nofollow external noopener noreferrer' );
+			}
 		}
 
-		$this->initialize();
+		return $processor->get_updated_html();
 	}
 
 	// endregion
