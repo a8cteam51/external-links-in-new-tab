@@ -1,6 +1,6 @@
 <?php
 
-namespace WPCOMSpecialProjects\Scaffold\Integrations;
+namespace WPCOMSpecialProjects\ExternalLinksinNewTab\Integrations;
 
 defined( 'ABSPATH' ) || exit;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace WPCOMSpecialProjects\Scaffold;
+namespace WPCOMSpecialProjects\ExternalLinksinNewTab;
 
-use WPCOMSpecialProjects\Scaffold\Integrations\WC_Subscriptions;
+use WPCOMSpecialProjects\ExternalLinksinNewTab\Integrations\WC_Subscriptions;
 
 defined( 'ABSPATH' ) || exit;
 
